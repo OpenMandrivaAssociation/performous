@@ -20,7 +20,7 @@ BuildRequires:	libffmpeg-devel
 BuildRequires:	libjack-devel jack
 BuildRequires:	libmagick-devel 
 BuildRequires:	libpulseaudio-devel 
-BuildRequires:	lib64rsvg2-devel 
+BuildRequires:	librsvg2-devel 
 BuildRequires:	libsamplerate-devel
 BuildRequires:	libsigc++2.0-devel 
 BuildRequires:	libxml2-devel
@@ -68,8 +68,7 @@ start it firsttime with performous --help to get the options!
 
 
 %prep
-%setup -q -n Performous-0.5.1-Source -a1
-
+%setup -q -n Performous-{%version}-Source -a1
 
 
 %build
@@ -84,7 +83,7 @@ start it firsttime with performous --help to get the options!
 		-DLibDA_PLUGIN_PORTAUDIO=1 \
 		-DLibDA_PLUGIN_PULSE=1
 %make
-cd $RPM_BUILD_DIR/Performous-0.5.1-Source/build/lang
+cd $RPM_BUILD_DIR/Performous-%{version}-Source/build/lang
 mv cmake_install.cmake cmake_install.cmake.old  
 sed 's/\/usr\/share\/locale/$RPM_BUILD_ROOT\/usr\/share\/locale/' cmake_install.cmake.old > cmake_install.cmake
 
