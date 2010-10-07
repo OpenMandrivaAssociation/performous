@@ -68,7 +68,7 @@ start it firsttime with performous --help to get the options!
 
 
 %prep
-%setup -q -n Performous-{%version}-Source -a1
+%setup -q -n Performous-%version-Source -a1
 
 
 %build
