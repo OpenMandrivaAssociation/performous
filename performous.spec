@@ -9,7 +9,7 @@ Source:			%{name}-%{version}-Source.tar.bz2
 Source1:		Jamelia-Demo.tar.bz2
 BuildRoot:              %{_tmppath}/%{name}-%{version}-build
 
-BuildRequires:	liboil-devel
+BuildRequires:	liboil-devel jpeg-devel
 BuildRequires:	alsa-lib-devel
 BuildRequires:	libgdk_pixbuf2.0-devel
 BuildRequires:	libglib2.0-devel
@@ -65,38 +65,27 @@ Features
 Note:
 start it firsttime with performous --help to get the options!
 
-
-
 %prep
-%setup -q -n Performous-%version-Source -a1
+%setup -q -n %{name} -a1
+
 
 
 %build
-
+rm -rf CMakeCache.txt
 %__install -dm 755 build
  pushd build
 	cmake .. \
 		-DCMAKE_BUILD_TYPE="RELEASE" \
                 -DCMAKE_INSTALL_PREFIX=$RPM_BUILD_ROOT/usr \
-		-DLibDA_PLUGIN_GSTREAMER=1 \
-		-DLibDA_PLUGIN_JACK=1 \
-		-DLibDA_PLUGIN_PORTAUDIO=1 \
-		-DLibDA_PLUGIN_PULSE=1
+		
 %make
-cd $RPM_BUILD_DIR/Performous-%{version}-Source/build/lang
-mv cmake_install.cmake cmake_install.cmake.old  
-sed 's/\/usr\/share\/locale/$RPM_BUILD_ROOT\/usr\/share\/locale/' cmake_install.cmake.old > cmake_install.cmake
-
 %install
 pushd build
 %make install prefix=$RPM_BUILD_ROOT/usr
-%ifarch x86_64
-mv $RPM_BUILD_ROOT/usr/lib $RPM_BUILD_ROOT/usr/lib64 
-%endif
 
 # demo song
 %__install -dm 755 "%{buildroot}%{_datadir}/games/ultrastar/songs/Jamelia Superstar"
-cd $RPM_BUILD_DIR/Performous-0.5.1-Source/
+cd $RPM_BUILD_DIR/%{name}/
 %__install -m 644 "Jamelia Superstar"/* \
 	"%{buildroot}%{_datadir}/games/ultrastar/songs/Jamelia Superstar"
 
@@ -133,6 +122,9 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 %doc docs/*
+%{_bindir}/ss*
+%{_bindir}/gh*
+%{_bindir}/itg_pck
 %{_bindir}/performous
 %dir %{_datadir}/games/performous
 %{_datadir}/games/performous/*
@@ -141,8 +133,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pixmaps/*.png
 %{_datadir}/pixmaps/*.xpm
 %{_datadir}/applications/*.desktop
-%{_bindir}/ss_*
 %{_datadir}/man/man6/performous.6.lzma
-%{_bindir}/itg_pck
-%{_libdir}/performous/*
+%{_datadir}/locale/*       
+
+
+%changelog
 
