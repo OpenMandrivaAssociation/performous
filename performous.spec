@@ -24,7 +24,7 @@ BuildRequires:	librsvg2-devel
 BuildRequires:	libsamplerate-devel
 BuildRequires:	libsigc++2.0-devel 
 BuildRequires:	libxml2-devel
-BuildRequires:  libxml++1.0-devel
+BuildRequires:  libxml++2.6-devel
 BuildRequires:	libSDL-devel
 BuildRequires:	libglew-devel
 BuildRequires:	boost-devel
