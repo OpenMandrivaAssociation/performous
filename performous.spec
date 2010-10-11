@@ -1,5 +1,5 @@
 Name:			performous
-Release:	        %mkrel 01
+Release:		%mkrel 01
 Version:		0.5.1
 Group:			Games/Other
 Summary:		Performous - A cross-platform clone of the Playstation 2 game Singstar
@@ -7,7 +7,7 @@ License:		GPL
 Url:			http://performous.org/index.html
 Source:			%{name}-%{version}-Source.tar.bz2
 Source1:		Jamelia-Demo.tar.bz2
-BuildRoot:              %{_tmppath}/%{name}-%{version}-build
+BuildRoot:		%{_tmppath}/%{name}-%{version}-build
 
 BuildRequires:	liboil-devel jpeg-devel
 BuildRequires:	alsa-lib-devel
@@ -76,7 +76,7 @@ rm -rf CMakeCache.txt
  pushd build
 	cmake .. \
 		-DCMAKE_BUILD_TYPE="RELEASE" \
-                -DCMAKE_INSTALL_PREFIX=$RPM_BUILD_ROOT/usr \
+		-DCMAKE_INSTALL_PREFIX=$RPM_BUILD_ROOT%{_usr} \
 		
 %make
 %install
@@ -134,8 +134,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pixmaps/*.xpm
 %{_datadir}/applications/*.desktop
 %{_datadir}/man/man6/performous.6.lzma
-%{_datadir}/locale/*       
-
+%{_datadir}/locale/*
 
 %changelog
 
