@@ -35,6 +35,7 @@ BuildRequires:	help2man
 BuildRequires:	pkgconfig
 BuildRequires:	portaudio-devel
 BuildRequires:	sndfile-devel
+BuildRequires:	imagemagick
 
 %define debug_packages	%{nil}
 
