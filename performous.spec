@@ -8,36 +8,24 @@ Url:			http://performous.org/index.html
 Source:			%{name}-%{version}-Source.tar.bz2
 Source1:		Jamelia-Demo.tar.bz2
 BuildRoot:		%{_tmppath}/%{name}-%{version}-build
-
-BuildRequires:	liboil-devel jpeg-devel
-BuildRequires:	alsa-lib-devel
-BuildRequires:	libgdk_pixbuf2.0-devel
-BuildRequires:	glibmm2.4-devel
-BuildRequires:	libgstreamer-devel
-BuildRequires:	libgstreamer-plugins-base-devel gamin-devel
-BuildRequires:	libffmpeg-devel
-BuildRequires:	libjack-devel jack
-BuildRequires:	libmagick-devel 
-BuildRequires:	libpulseaudio-devel 
-BuildRequires:	librsvg2-devel 
-BuildRequires:	libsamplerate-devel
-BuildRequires:	libsigc++2.0-devel 
-BuildRequires:	libxml2-devel
-BuildRequires:  libxml++2.6-devel
-BuildRequires:	libSDL-devel
+BuildRequires:	libgl-devel
 BuildRequires:	libglew-devel
+BuildRequires:	libglu-devel
+BuildRequires:	imagemagick-devel
+BuildRequires:	SDL-devel
+BuildRequires:	ffmpeg-devel
 BuildRequires:	boost-devel
-BuildRequires:	cmake
-BuildRequires:	cairo-devel >= 1.2
-BuildRequires:	gcc-c++
-BuildRequires:	help2man
-BuildRequires:	pkgconfig
+BuildRequires:	gtk+2-devel
+BuildRequires:	jpeg-devel
+BuildRequires:	png-devel
+BuildRequires:	librsvg-devel
+BuildRequires:	glibmm2.4-devel
 BuildRequires:	portaudio-devel
-BuildRequires:	sndfile-devel
+BuildRequires:	portmidi-devel
+BuildRequires:	libxml++-devel
+BuildRequires:	cmake
 BuildRequires:	imagemagick
-
-%define debug_packages	%{nil}
-
+BuildRequires:	help2man
 
 %description
 Performous - new Sing Screen using themed lyrics.
@@ -68,8 +56,10 @@ start it firsttime with performous --help to get the options!
 
 %prep
 %setup -q -n %{name} -a1
+rm -f CMakeCache.txt
 
 %build
+export CXXFLAGS="%optflags -DBOOST_FILESYSTEM_VERSION=2"
 %cmake
 %make
 
@@ -94,7 +84,6 @@ convert %{buildroot}%{_datadir}/pixmaps/performous.xpm -resize 48x48! \
 %__rm %{buildroot}%{_datadir}/applications/performous.desktop
 %__cat > %{buildroot}%{_datadir}/applications/%{name}.desktop << EOF
 [Desktop Entry]
-Encoding=UTF-8
 Name=Performous
 Comment=A karaoke game
 Comment[de]=Ein Karaoke Spiel
@@ -103,32 +92,25 @@ Comment[fr]=Un jeu de Karaoke
 Comment[fi]=Karaokepeli
 Comment[es]=Un juego de karaoke
 Exec=performous
-Icon=performous.png
+Icon=performous
 Terminal=false
 Type=Application
-Categories=Application;Game;Simulation;
+Categories=Game;Simulation;
 EOF
 
+%find_lang Performous
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files
+%files -f Performous.lang
 %defattr(-,root,root)
 %doc docs/*
 %{_bindir}/ss*
 %{_bindir}/gh*
 %{_bindir}/itg_pck
 %{_bindir}/performous
-%dir %{_datadir}/games/performous
-%{_datadir}/games/performous/*
-%dir %{_datadir}/games/ultrastar
-%{_datadir}/games/ultrastar/*
-%{_datadir}/pixmaps/*.png
-%{_datadir}/pixmaps/*.xpm
+%{_datadir}/games/*
+%{_datadir}/pixmaps/*
 %{_datadir}/applications/*.desktop
-%{_datadir}/man/man6/performous.6.lzma
-%{_datadir}/locale/*
-
-%changelog
-
+%{_mandir}/man6/performous.6*
