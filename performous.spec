@@ -1,11 +1,11 @@
 Name:			performous
-Release:		%mkrel 3
-Version:		0.5.1
+Release:		%mkrel 1
+Version:		0.6.1
 Group:			Games/Other
 Summary:		Performous - A cross-platform clone of the Playstation 2 game Singstar
 License:		GPL
 Url:			http://performous.org/index.html
-Source:			%{name}-%{version}-Source.tar.bz2
+Source:			Performous-%{version}-Source.tar.bz2
 Source1:		Jamelia-Demo.tar.bz2
 BuildRoot:		%{_tmppath}/%{name}-%{version}-build
 BuildRequires:	libgl-devel
@@ -21,7 +21,7 @@ BuildRequires:	png-devel
 BuildRequires:	librsvg-devel
 BuildRequires:	glibmm2.4-devel
 BuildRequires:	portaudio-devel
-BuildRequires:	portmidi-devel
+BuildRequires:	portmidi-devel >= 1:217
 BuildRequires:	libxml++-devel
 BuildRequires:	cmake
 BuildRequires:	imagemagick
@@ -55,8 +55,7 @@ Note:
 start it firsttime with performous --help to get the options!
 
 %prep
-%setup -q -n %{name} -a1
-rm -f CMakeCache.txt
+%setup -qn Performous-%{version}-Source -a1
 
 %build
 export CXXFLAGS="%optflags -DBOOST_FILESYSTEM_VERSION=2"
@@ -69,7 +68,6 @@ rm -fr %buildroot
 
 # demo song
 %__install -dm 755 "%{buildroot}%{_datadir}/games/ultrastar/songs/Jamelia Superstar"
-cd $RPM_BUILD_DIR/%{name}/
 %__install -m 644 "Jamelia Superstar"/* \
 	"%{buildroot}%{_datadir}/games/ultrastar/songs/Jamelia Superstar"
 
@@ -78,25 +76,6 @@ cd $RPM_BUILD_DIR/%{name}/
 %__install -dm 755 %{buildroot}%{_datadir}/pixmaps
 convert %{buildroot}%{_datadir}/pixmaps/performous.xpm -resize 48x48! \
 	%{buildroot}%{_datadir}/pixmaps/performous.png
-
-# menu-entry
-%__install -dm 755 %{buildroot}%{_datadir}/applications
-%__rm %{buildroot}%{_datadir}/applications/performous.desktop
-%__cat > %{buildroot}%{_datadir}/applications/%{name}.desktop << EOF
-[Desktop Entry]
-Name=Performous
-Comment=A karaoke game
-Comment[de]=Ein Karaoke Spiel
-Comment[ro]=Un joc de tip karaoke
-Comment[fr]=Un jeu de Karaoke
-Comment[fi]=Karaokepeli
-Comment[es]=Un juego de karaoke
-Exec=performous
-Icon=performous
-Terminal=false
-Type=Application
-Categories=Game;Simulation;
-EOF
 
 %find_lang Performous
 
