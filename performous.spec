@@ -12,7 +12,6 @@ BuildRoot:		%{_tmppath}/%{name}-%{version}-build
 BuildRequires:	liboil-devel jpeg-devel
 BuildRequires:	alsa-lib-devel
 BuildRequires:	libgdk_pixbuf2.0-devel
-BuildRequires:	libglib2.0-devel
 BuildRequires:	glibmm2.4-devel
 BuildRequires:	libgstreamer-devel
 BuildRequires:	libgstreamer-plugins-base-devel gamin-devel
@@ -70,20 +69,13 @@ start it firsttime with performous --help to get the options!
 %prep
 %setup -q -n %{name} -a1
 
-
-
 %build
-rm -rf CMakeCache.txt
-%__install -dm 755 build
- pushd build
-	cmake .. \
-		-DCMAKE_BUILD_TYPE="RELEASE" \
-		-DCMAKE_INSTALL_PREFIX=$RPM_BUILD_ROOT%{_usr} \
-		
+%cmake
 %make
+
 %install
-pushd build
-%make install prefix=$RPM_BUILD_ROOT/usr
+rm -fr %buildroot
+%makeinstall_std -C build
 
 # demo song
 %__install -dm 755 "%{buildroot}%{_datadir}/games/ultrastar/songs/Jamelia Superstar"
