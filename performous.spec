@@ -1,5 +1,5 @@
 Name:		performous
-Release:	1
+Release:	2
 Version:	0.6.1
 Group:		Games/Other
 Summary:	Performous - A cross-platform clone of the Playstation 2 game Singstar
