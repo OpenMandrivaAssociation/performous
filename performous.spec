@@ -1,31 +1,34 @@
-Name:			performous
-Release:		%mkrel 1
-Version:		0.6.1
-Group:			Games/Other
-Summary:		Performous - A cross-platform clone of the Playstation 2 game Singstar
-License:		GPL
-Url:			http://performous.org/index.html
-Source:			Performous-%{version}-Source.tar.bz2
-Source1:		Jamelia-Demo.tar.bz2
-BuildRoot:		%{_tmppath}/%{name}-%{version}-build
-BuildRequires:	libgl-devel
-BuildRequires:	libglew-devel
-BuildRequires:	libglu-devel
-BuildRequires:	imagemagick-devel
-BuildRequires:	SDL-devel
-BuildRequires:	ffmpeg-devel
+Name:		performous
+Release:	1
+Version:	0.6.1
+Group:		Games/Other
+Summary:	Performous - A cross-platform clone of the Playstation 2 game Singstar
+License:	GPL
+Url:		http://performous.org/index.html
+Source0:	Performous-%{version}-Source.tar.bz2
+Source1:	Jamelia-Demo.tar.bz2
+Patch0:		Performous-0.6.1-Source_glibh.patch
+Patch1:		Performous-0.6.1-Source_libpng15.patch
+Patch2:		Performous-0.6.1-Source_ffmpeg.patch
+
+BuildRequires:	cmake
+BuildRequires:	help2man
+BuildRequires:	imagemagick
 BuildRequires:	boost-devel
-BuildRequires:	gtk+2-devel
+BuildRequires:	ffmpeg-devel
+BuildRequires:	imagemagick-devel
 BuildRequires:	jpeg-devel
 BuildRequires:	png-devel
+BuildRequires:	pkgconfig(gl)
+BuildRequires:	pkgconfig(glew)
+BuildRequires:	pkgconfig(glu)
+BuildRequires:	pkgconfig(gtk+-2.0)
+BuildRequires:	pkgconfig(sdl)
 BuildRequires:	librsvg-devel
 BuildRequires:	glibmm2.4-devel
 BuildRequires:	portaudio-devel
 BuildRequires:	portmidi-devel >= 1:217
 BuildRequires:	libxml++-devel
-BuildRequires:	cmake
-BuildRequires:	imagemagick
-BuildRequires:	help2man
 
 %description
 Performous - new Sing Screen using themed lyrics.
@@ -56,6 +59,7 @@ start it firsttime with performous --help to get the options!
 
 %prep
 %setup -qn Performous-%{version}-Source -a1
+%apply_patches
 
 %build
 export CXXFLAGS="%optflags -DBOOST_FILESYSTEM_VERSION=2"
@@ -63,27 +67,22 @@ export CXXFLAGS="%optflags -DBOOST_FILESYSTEM_VERSION=2"
 %make
 
 %install
-rm -fr %buildroot
 %makeinstall_std -C build
 
 # demo song
-%__install -dm 755 "%{buildroot}%{_datadir}/games/ultrastar/songs/Jamelia Superstar"
-%__install -m 644 "Jamelia Superstar"/* \
+install -dm 755 "%{buildroot}%{_datadir}/games/ultrastar/songs/Jamelia Superstar"
+install -m 644 "Jamelia Superstar"/* \
 	"%{buildroot}%{_datadir}/games/ultrastar/songs/Jamelia Superstar"
 
 
 # icon
-%__install -dm 755 %{buildroot}%{_datadir}/pixmaps
+install -dm 755 %{buildroot}%{_datadir}/pixmaps
 convert %{buildroot}%{_datadir}/pixmaps/performous.xpm -resize 48x48! \
 	%{buildroot}%{_datadir}/pixmaps/performous.png
 
 %find_lang Performous
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %files -f Performous.lang
-%defattr(-,root,root)
 %doc docs/*
 %{_bindir}/ss*
 %{_bindir}/gh*
