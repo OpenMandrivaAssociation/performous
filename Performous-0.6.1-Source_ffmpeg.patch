@@ -1,0 +1,31 @@
+--- Performous-0.6.1-Source/game/ffmpeg.cc~	2010-10-31 16:05:43.000000000 +0000
++++ Performous-0.6.1-Source/game/ffmpeg.cc	2012-06-11 12:28:38.189636884 +0000
+@@ -51,7 +51,7 @@
+ 	boost::mutex::scoped_lock l(s_avcodec_mutex);
+ 	av_register_all();
+ 	av_log_set_level(AV_LOG_ERROR);
+-	if (av_open_input_file(&pFormatCtx, m_filename.c_str(), NULL, 0, NULL)) throw std::runtime_error("Cannot open input file");
++	if (avformat_open_input(&pFormatCtx, m_filename.c_str(), NULL, NULL)) throw std::runtime_error("Cannot open input file");
+ 	if (av_find_stream_info(pFormatCtx) < 0) throw std::runtime_error("Cannot find stream information");
+ 	pFormatCtx->flags |= AVFMT_FLAG_GENPTS;
+ 	videoStream = -1;
+@@ -60,8 +60,8 @@
+ 	for (unsigned int i=0; i<pFormatCtx->nb_streams; i++) {
+ 		AVCodecContext* cc = pFormatCtx->streams[i]->codec;
+ 		cc->workaround_bugs = FF_BUG_AUTODETECT;
+-		if (videoStream == -1 && cc->codec_type==CODEC_TYPE_VIDEO) videoStream = i;
+-		if (audioStream == -1 && cc->codec_type==CODEC_TYPE_AUDIO) audioStream = i;
++		if (videoStream == -1 && cc->codec_type==AVMEDIA_TYPE_VIDEO) videoStream = i;
++		if (audioStream == -1 && cc->codec_type==AVMEDIA_TYPE_AUDIO) audioStream = i;
+ 	}
+ 	if (videoStream == -1 && decodeVideo) throw std::runtime_error("No video stream found");
+ 	if (audioStream == -1 && decodeAudio) throw std::runtime_error("No audio stream found");
+@@ -92,7 +92,7 @@
+ 		pAudioCodecCtx = cc;
+ #if LIBAVCODEC_VERSION_INT > ((52<<16)+(12<<8)+0)
+ 		pResampleCtx = av_audio_resample_init(AUDIO_CHANNELS, cc->channels, m_rate, cc->sample_rate,
+-			SAMPLE_FMT_S16, SAMPLE_FMT_S16, 16, 10, 0, 0.8);
++			AV_SAMPLE_FMT_S16, AV_SAMPLE_FMT_S16, 16, 10, 0, 0.8);
+ #else
+ 		pResampleCtx = audio_resample_init(AUDIO_CHANNELS, cc->channels, m_rate, cc->sample_rate);
+ #endif
