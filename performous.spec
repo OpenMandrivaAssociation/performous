@@ -59,7 +59,7 @@ start it firsttime with performous --help to get the options!
 
 %prep
 %setup -qn Performous-%{version}-Source -a1
-%apply_patches
+%autopatch -p1
 
 %build
 export CXXFLAGS="%optflags -DBOOST_FILESYSTEM_VERSION=2"
