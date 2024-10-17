@@ -4,7 +4,7 @@ Version:	0.6.1
 Group:		Games/Other
 Summary:	Performous - A cross-platform clone of the Playstation 2 game Singstar
 License:	GPL
-Url:		http://performous.org/index.html
+Url:		https://performous.org/index.html
 Source0:	Performous-%{version}-Source.tar.bz2
 Source1:	Jamelia-Demo.tar.bz2
 Patch0:		Performous-0.6.1-Source_glibh.patch
